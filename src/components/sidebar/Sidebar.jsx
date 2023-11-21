@@ -6,6 +6,7 @@ import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   return (
@@ -19,12 +20,16 @@ const Sidebar = () => {
           <p className="title">MAIN</p>
           <li>
             <DashboardIcon className="icon" />
-            <span>Dashboard</span>
+            <Link to="/">
+              <span>Dashboard</span>
+            </Link>
           </li>
           <p className="title">Patients</p>
           <li>
             <PersonAddAltIcon className="icon" />
-            <span>Patient</span>
+            <Link to="/users">
+              <span>Patient</span>
+            </Link>
           </li>
           <p className="title">Doctors</p>
           <li>
