@@ -8,13 +8,19 @@ const Datatable = () => {
   const [patientsList, setPatientsList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Define the columns for the DataGrid
+  //Columns for the data grid
   const columns = [
     { field: "patientId", headerName: "Patient ID", width: 130 },
     { field: "email", headerName: "Email", width: 200 },
     { field: "firstName", headerName: "First Name", width: 130 },
     { field: "lastName", headerName: "Last Name", width: 130 },
-    // ... add other columns as needed
+    { field: "dateOfBirth", headerName: "Date of Birth", width: 130 },
+    { field: "gender", headerName: "Gender", width: 130 },
+    { field: "bloodGroup", headerName: "Blood Group", width: 130 },
+    { field: "phoneNumber", headerName: "Phone Number", width: 130 },
+    { field: "address", headerName: "Address", width: 200 },
+    { field: "isApproved", headerName: "Is Approved", width: 130 },
+    { field: "isActive", headerName: "Is Active", width: 130 },
   ];
 
   useEffect(() => {
@@ -23,7 +29,7 @@ const Datatable = () => {
       .get("/all")
       .then((res) => {
         setPatientsList(
-          res.data.map((item, index) => ({ ...item, id: index })),
+          res.data.map((item, index) => ({ ...item, id: index }))
         );
       })
       .catch((err) => {
