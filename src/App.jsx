@@ -4,6 +4,8 @@ import Login from "./pages/login/Login";
 import List from "./pages/list/List";
 import Single from "./pages/single/Single";
 import New from "./pages/new/New";
+import { useEffect } from "react";
+import axiosInstanceUserService from "./utils/axiosInstanceUserService";
 
 function App() {
   return (
