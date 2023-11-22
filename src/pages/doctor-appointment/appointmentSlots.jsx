@@ -30,10 +30,12 @@ const AppointmentSlots = () => {
     axiosInstanceAppointmentService
       .get(`/slots/get/doctor/${doctorId}/${selectedDate}`)
       .then((response) => {
-        setSlots(response.data);
+        setSlots(response?.data);
+        console.log("Slots:", response?.data);
       })
       .catch((error) => {
         console.error("Error fetching slots:", error);
+        setSlots([]);
         toast.error(error?.response?.data?.message || "Error fetching slots!");
       });
   };

@@ -12,6 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 import PatientRegistration from "./pages/register-patient/patientRegister";
 import DoctorAppointment from "./pages/doctor-appointment/doctorAppointment";
 import AppointmentSlots from "./pages/doctor-appointment/appointmentSlots";
+import DoctorBookedAppointments from "./pages/doctor-appointment/doctorBookedAppointments";
 
 function App() {
   return (
@@ -36,6 +37,10 @@ function App() {
                 element={<DoctorAppointment />}
               />
               <Route path="appointment/getall" element={<AppointmentSlots />} />
+              <Route
+                path="appointment/booked/getall"
+                element={<DoctorBookedAppointments />}
+              />
             </Route>
             <Route path="admin">
               <Route index element={<List />} />
