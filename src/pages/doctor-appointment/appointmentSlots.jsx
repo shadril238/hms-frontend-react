@@ -51,6 +51,13 @@ const AppointmentSlots = () => {
       });
   };
 
+  const formatTime = (time) => {
+    let [hours, minutes] = time.split(":");
+    hours = parseInt(hours, 10);
+    const ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12 || 12;
+    return `${hours}:${minutes} ${ampm}`;
+  };
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-xl font-semibold mb-4">
@@ -74,22 +81,30 @@ const AppointmentSlots = () => {
       <table className="min-w-full table-auto shadow-lg bg-white">
         <thead className="bg-gray-800 text-white">
           <tr>
-            <th className="px-4 py-2">Start Time</th>
-            <th className="px-4 py-2">End Time</th>
-            <th className="px-4 py-2">Available</th>
-            <th className="px-4 py-2">Actions</th>
+            <th className="px-4 py-2 text-center align-middle">S.No</th>
+            <th className="px-4 py-2 text-center align-middle">Start Time</th>
+            <th className="px-4 py-2 text-center align-middle">End Time</th>
+            <th className="px-4 py-2 text-center align-middle">Available</th>
+            <th className="px-4 py-2 text-center align-middle">Actions</th>
           </tr>
         </thead>
         <tbody>
           {slots.length > 0 ? (
-            slots.map((slot) => (
+            slots.map((slot, index) => (
               <tr key={slot.availabilityId} className="border-b">
-                <td className="border px-4 py-2">{slot.startTime}</td>
-                <td className="border px-4 py-2">{slot.endTime}</td>
-                <td className="border px-4 py-2">
+                <td className="border px-4 py-2 text-center align-middle">
+                  {index + 1}
+                </td>
+                <td className="border px-4 py-2 text-center align-middle">
+                  {formatTime(slot.startTime)}
+                </td>
+                <td className="border px-4 py-2 text-center align-middle">
+                  {formatTime(slot.endTime)}
+                </td>
+                <td className="border px-4 py-2 text-center align-middle">
                   {slot.isAvailable ? "Yes" : "No"}
                 </td>
-                <td className="border px-4 py-2">
+                <td className="border px-4 py-2 text-center align-middle">
                   <button
                     onClick={() => deleteSlot(slot.availabilityId)}
                     className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline"
@@ -101,7 +116,7 @@ const AppointmentSlots = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="4" className="text-center py-3">
+              <td colSpan="5" className="text-center py-3 align-middle">
                 No data found
               </td>
             </tr>
