@@ -27,7 +27,7 @@ const Sidebar = () => {
           <p className="title">Patients</p>
           <li>
             <PersonAddAltIcon className="icon" />
-            <Link to="/users">
+            <Link to="/patient">
               <span>Patient</span>
             </Link>
           </li>

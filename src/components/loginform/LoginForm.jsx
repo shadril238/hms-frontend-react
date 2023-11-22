@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import axiosInstanceUserService from "../../utils/axiosInstanceUserService";
 
 const LoginForm = () => {
@@ -16,20 +17,29 @@ const LoginForm = () => {
       password,
     };
 
-    axiosInstanceUserService.post("/login", userCredential).then((resp) => {
-      const data = resp.data;
-      console.log("Response from login ", data?.userLoginDetails);
-      // Set the token to the local storage
-      localStorage.setItem("token", data?.userLoginDetails?.token);
-      // Set the role to the local storage
-      localStorage.setItem("role", data?.userLoginDetails?.role);
+    axiosInstanceUserService
+      .post("/login", userCredential)
+      .then((resp) => {
+        const data = resp.data;
+        console.log("Response from login ", data?.userLoginDetails);
+        // Set the token to the local storage
+        localStorage.setItem("token", data?.userLoginDetails?.token);
+        // Set the role to the local storage
+        localStorage.setItem("role", data?.userLoginDetails?.role);
 
-      data?.role == "Patient"
-        ? navigate("/patient")
-        : data?.role == "Doctor"
-        ? navigate("/doctor")
-        : navigate("/admin");
-    });
+        toast.success(data?.message || "Login successful!");
+        const role = data?.userLoginDetails?.role;
+        if (role === "Patient") {
+          navigate("/patient");
+        } else if (role === "Doctor") {
+          navigate("/doctor");
+        } else {
+          navigate("/admin");
+        }
+      })
+      .catch((err) => {
+        toast.error(err?.response?.data?.message || "Something went wrong!");
+      });
   };
 
   return (

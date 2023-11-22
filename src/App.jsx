@@ -6,6 +6,9 @@ import Single from "./pages/single/Single";
 import New from "./pages/new/New";
 import { useEffect } from "react";
 import axiosInstanceUserService from "./utils/axiosInstanceUserService";
+import { toast } from "react-toastify";
+import { ToastContainer, Zoom } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -15,19 +18,30 @@ function App() {
           <Route path="/">
             <Route index element={<Home />} />
             <Route path="login" element={<Login />} />
-            <Route path="users">
+            <Route path="patient">
               <Route index element={<List />} />
-              <Route path=":userId" element={<Single />} />
+              <Route path=":patientId" element={<Single />} />
               <Route path="new" element={<New />} />
             </Route>
-            <Route path="doctors">
+            <Route path="doctor">
               <Route index element={<List />} />
               <Route path=":doctorId" element={<Single />} />
+              <Route path="new" element={<New />} />
+            </Route>
+            <Route path="admin">
+              <Route index element={<List />} />
+              <Route path=":adminId" element={<Single />} />
               <Route path="new" element={<New />} />
             </Route>
           </Route>
         </Routes>
       </BrowserRouter>
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        pauseOnHover={false}
+        transition={Zoom}
+      />
     </div>
   );
 }
