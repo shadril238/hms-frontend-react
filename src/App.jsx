@@ -10,9 +10,10 @@ import { toast } from "react-toastify";
 import { ToastContainer, Zoom } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PatientRegistration from "./pages/register-patient/patientRegister";
-import DoctorAppointment from "./pages/doctor-appointment/doctorAppointment";
-import AppointmentSlots from "./pages/doctor-appointment/appointmentSlots";
-import DoctorBookedAppointments from "./pages/doctor-appointment/doctorBookedAppointments";
+import DoctorAppointment from "./components/doctor-appointment/doctorAppointment";
+import AppointmentSlots from "./components/doctor-appointment/appointmentSlots";
+import DoctorBookedAppointments from "./components/doctor-appointment/doctorBookedAppointments";
+import AppointmentSlotsPage from "./pages/doctor-appointment-pages/appointmentSlotsPage";
 
 function App() {
   return (
@@ -36,7 +37,10 @@ function App() {
                 path="appointment/create"
                 element={<DoctorAppointment />}
               />
-              <Route path="appointment/getall" element={<AppointmentSlots />} />
+              <Route
+                path="appointment/getall"
+                element={<AppointmentSlotsPage />}
+              />
               <Route
                 path="appointment/booked/getall"
                 element={<DoctorBookedAppointments />}
