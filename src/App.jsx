@@ -11,6 +11,7 @@ import { ToastContainer, Zoom } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PatientRegistration from "./pages/register-patient/patientRegister";
 import DoctorAppointment from "./pages/doctor-appointment/doctorAppointment";
+import AppointmentSlots from "./pages/doctor-appointment/appointmentSlots";
 
 function App() {
   return (
@@ -30,7 +31,11 @@ function App() {
               <Route index element={<List />} />
               <Route path=":doctorId" element={<Single />} />
               <Route path="new" element={<New />} />
-              <Route path="appointment" element={<DoctorAppointment />} />
+              <Route
+                path="appointment/create"
+                element={<DoctorAppointment />}
+              />
+              <Route path="appointment/getall" element={<AppointmentSlots />} />
             </Route>
             <Route path="admin">
               <Route index element={<List />} />
