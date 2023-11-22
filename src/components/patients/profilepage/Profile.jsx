@@ -95,7 +95,7 @@ const Profile = () => {
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">
             Health Records
           </h2>
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto" style={{ maxHeight: "400px" }}>
             <table className="min-w-full bg-white">
               <thead className="bg-gray-800 text-white">
                 <tr>

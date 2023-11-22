@@ -9,6 +9,7 @@ import axiosInstanceUserService from "./utils/axiosInstanceUserService";
 import { toast } from "react-toastify";
 import { ToastContainer, Zoom } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import PatientRegistration from "./pages/register-patient/patientRegister";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/">
             <Route index element={<Home />} />
             <Route path="login" element={<Login />} />
+            <Route path="patient/register" element={<PatientRegistration />} />
             <Route path="patient">
               <Route index element={<List />} />
               <Route path=":patientId" element={<Single />} />
