@@ -25,15 +25,15 @@ const Datatable = () => {
 
   //Columns for the data grid
   const columns = [
-    { field: "patientId", headerName: "Patient ID", width: 130 },
-    { field: "email", headerName: "Email", width: 200 },
-    { field: "firstName", headerName: "First Name", width: 130 },
-    { field: "lastName", headerName: "Last Name", width: 130 },
-    { field: "dateOfBirth", headerName: "Date of Birth", width: 130 },
-    { field: "gender", headerName: "Gender", width: 130 },
-    { field: "bloodGroup", headerName: "Blood Group", width: 130 },
+    { field: "patientId", headerName: "Patient ID", width: 80 },
+    { field: "email", headerName: "Email", width: 140 },
+    { field: "firstName", headerName: "First Name", width: 80 },
+    { field: "lastName", headerName: "Last Name", width: 80 },
+    { field: "dateOfBirth", headerName: "Date of Birth", width: 120 },
+    { field: "gender", headerName: "Gender", width: 80 },
+    { field: "bloodGroup", headerName: "Blood Group", width: 100 },
     { field: "phoneNumber", headerName: "Phone Number", width: 130 },
-    { field: "address", headerName: "Address", width: 200 },
+    // { field: "address", headerName: "Address", width: 150 },
     {
       field: "approved",
       headerName: "Status",

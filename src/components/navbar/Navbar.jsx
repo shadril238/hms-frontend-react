@@ -12,9 +12,15 @@ const Navbar = () => {
 
   return (
     <div className="bg-white shadow h-12 flex items-center justify-between px-4 md:px-6 border-b border-gray-200">
-      <div className="flex items-center">
-        <span className="text-lg text-gray-700 font-semibold">HMS</span>
+      {/* Empty div for balancing flex */}
+      <div></div>
+
+      <div className="flex-1 flex items-center justify-center">
+        <span className="text-lg text-gray-700 font-semibold">
+          Healthcare Management System
+        </span>
       </div>
+
       <div className="flex items-center space-x-4">
         <button
           onClick={() => handleClick("language")}

@@ -14,6 +14,11 @@ import DoctorAppointment from "./components/doctor-appointment/doctorAppointment
 import AppointmentSlots from "./components/doctor-appointment/appointmentSlots";
 import DoctorBookedAppointments from "./components/doctor-appointment/doctorBookedAppointments";
 import AppointmentSlotsPage from "./pages/doctor-appointment-pages/appointmentSlotsPage";
+import AppointmentCreate from "./pages/doctor-appointment-pages/appointmentCreate";
+import AppointmentBooked from "./pages/doctor-appointment-pages/appointmentBooked";
+import DoctorDatatable from "./components/patients/datatable/doctorDatatable";
+import PatientDoctorList from "./pages/list/patientDoctorList";
+import PatientDoctorProfileWithAppointment from "./pages/single/patientDoctorProfileWithAppointment";
 
 function App() {
   return (
@@ -28,6 +33,11 @@ function App() {
               <Route index element={<List />} />
               <Route path=":patientId" element={<Single />} />
               <Route path="new" element={<New />} />
+              <Route path="doctor/all" element={<PatientDoctorList />} />
+              <Route
+                path="doctor/:doctorId"
+                element={<PatientDoctorProfileWithAppointment />}
+              />
             </Route>
             <Route path="doctor">
               <Route index element={<List />} />
@@ -35,7 +45,7 @@ function App() {
               <Route path="new" element={<New />} />
               <Route
                 path="appointment/create"
-                element={<DoctorAppointment />}
+                element={<AppointmentCreate />}
               />
               <Route
                 path="appointment/getall"
@@ -43,7 +53,7 @@ function App() {
               />
               <Route
                 path="appointment/booked/getall"
-                element={<DoctorBookedAppointments />}
+                element={<AppointmentBooked />}
               />
             </Route>
             <Route path="admin">

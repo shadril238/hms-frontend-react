@@ -1,10 +1,9 @@
 import React from "react";
-// Import your components
 import DoctorSidebar from "../../components/sidebar/DoctorSidebar";
 import Navbar from "../../components/navbar/Navbar";
-import AppointmentSlots from "../../components/doctor-appointment/appointmentSlots";
+import DoctorBookedAppointments from "../../components/doctor-appointment/doctorBookedAppointments";
 
-const AppointmentSlotsPage = () => {
+const AppointmentBooked = () => {
   return (
     <div className="flex min-h-screen">
       <div className="w-56">
@@ -16,11 +15,11 @@ const AppointmentSlotsPage = () => {
         <Navbar />
         <div className="p-4">
           {" "}
-          <AppointmentSlots />
+          <DoctorBookedAppointments />
         </div>
       </div>
     </div>
   );
 };
 
-export default AppointmentSlotsPage;
+export default AppointmentBooked;

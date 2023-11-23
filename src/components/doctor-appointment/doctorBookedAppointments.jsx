@@ -10,19 +10,19 @@ const DoctorBookedAppointments = () => {
   );
   const [doctorId, setDoctorId] = useState("");
 
-  useEffect(() => {
+  // useEffect(() => {}, []);
+
+  const fetchBookedAppointments = () => {
     axiosInstanceDoctorService
       .get("/profile")
       .then((response) => {
-        setDoctorId(response.data.doctorId);
+        setDoctorId(response?.data?.doctorId);
       })
       .catch((error) => {
         console.error("Error fetching doctor profile", error);
         toast.error("Error fetching doctor id from the token!");
       });
-  }, []);
 
-  const fetchBookedAppointments = () => {
     if (!selectedDate) {
       toast.error("Please select a date.");
       return;

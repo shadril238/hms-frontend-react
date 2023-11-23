@@ -33,32 +33,6 @@ const Sidebar = () => {
             </Link>
           </li>
           {/* Patient Section */}
-          <li className="mb-2">
-            <div
-              className="flex items-center p-2 hover:bg-blue-600 bg-blue-500 cursor-pointer"
-              onClick={() => setPatientSubmenuOpen(!patientSubmenuOpen)}
-            >
-              <PersonAddAltIcon className="text-white" />
-              <span className="flex-grow ml-4 text-base font-semibold text-white">
-                Patients
-              </span>
-              {patientSubmenuOpen ? (
-                <ExpandLessIcon className="text-white" />
-              ) : (
-                <ExpandMoreIcon className="text-white" />
-              )}
-            </div>
-            {patientSubmenuOpen && (
-              <ul className="mt-0">
-                <li className="py-1 text-base font-semibold hover:bg-gray-100 border border-gray-200 pl-10">
-                  <Link to="/patient" className="text-black">
-                    Patient List
-                  </Link>
-                </li>
-                {/* Additional submenu items can be added here */}
-              </ul>
-            )}
-          </li>
           {/* ... Dashboard, Patients ... */}
           {/* Doctor Section */}
           <li className="mb-2">
@@ -68,7 +42,7 @@ const Sidebar = () => {
             >
               <MedicalServicesIcon className="text-white" />
               <span className="flex-grow ml-4 text-base font-semibold text-white">
-                Appointment
+                Doctor
               </span>
               {doctorSubmenuOpen ? (
                 <ExpandLessIcon className="text-white" />
@@ -80,7 +54,7 @@ const Sidebar = () => {
               <ul className="mt-0">
                 <li className="py-1 text-base font-semibold hover:bg-gray-100 border border-gray-200 pl-10">
                   <Link to="/doctor/appointment/create" className="text-black">
-                    Create Appointments
+                    Doctor List
                   </Link>
                 </li>
                 <li className="py-1 text-base font-semibold hover:bg-gray-100 border border-gray-200 pl-10">
