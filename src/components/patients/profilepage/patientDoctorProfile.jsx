@@ -3,44 +3,92 @@ import { useParams } from "react-router-dom";
 import axiosInstanceDoctorService from "../../../utils/axiosInstanceDoctorService";
 import axiosInstanceAppointmentService from "../../../utils/axiosInstanceAppointmentService";
 import { toast } from "react-toastify";
+import axiosInstancePatientService from "../../../utils/axiosInstancePatientService";
 
 const DoctorProfile = () => {
   const { doctorId } = useParams();
   const [doctor, setDoctor] = useState(null);
   const [selectedDate, setSelectedDate] = useState(
-    new Date().toISOString().split("T")[0],
+    new Date().toISOString().split("T")[0]
   );
   const [appointmentSlots, setAppointmentSlots] = useState([]);
+  const [patientId, setPatientId] = useState("");
 
   useEffect(() => {
-    axiosInstanceDoctorService
-      .get(`/id/${doctorId}`)
-      .then((res) => {
-        setDoctor(res.data);
-      })
-      .catch((err) => {
-        console.error("Error fetching doctor data:", err);
-      });
-
+    fetchDoctorData();
+    fetchPatientId();
     fetchAppointmentSlots(selectedDate);
   }, [doctorId, selectedDate]);
+
+  const fetchDoctorData = () => {
+    axiosInstanceDoctorService
+      .get(`/id/${doctorId}`)
+      .then((res) => setDoctor(res.data))
+      .catch((err) => console.error("Error fetching doctor data:", err));
+  };
+
+  const fetchPatientId = () => {
+    axiosInstancePatientService
+      .get("/profile")
+      .then((res) => setPatientId(res?.data?.patientId))
+      .catch((err) => console.error("Error fetching patient ID:", err));
+  };
 
   const fetchAppointmentSlots = (date) => {
     axiosInstanceAppointmentService
       .get(`/slots/get/doctor/${doctorId}/${date}`)
       .then((res) => {
-        setAppointmentSlots(res.data);
-        toast.success("Appointment slots found!");
+        setAppointmentSlots(
+          res.data.map((slot) => ({ ...slot, appointmentType: "In_Person" }))
+        );
       })
       .catch((err) => {
         console.error("Error fetching appointment slots:", err);
         setAppointmentSlots([]);
-        toast.error("No appointment slots found for this date!");
       });
   };
 
   const handleDateChange = (event) => {
     setSelectedDate(event.target.value);
+  };
+
+  const convertTo12HourFormat = (time) => {
+    let [hours, minutes] = time.split(":");
+    const ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12 || 12;
+    return `${hours}:${minutes} ${ampm}`;
+  };
+
+  const handleAppointmentTypeChange = (slotId, type) => {
+    setAppointmentSlots(
+      appointmentSlots.map((slot) =>
+        slot.availabilityId === slotId
+          ? { ...slot, appointmentType: type }
+          : slot
+      )
+    );
+  };
+
+  const bookAppointment = (slot) => {
+    const bookingDetails = {
+      availabilityId: slot.availabilityId,
+      patientId: patientId,
+      appointmentType: slot.appointmentType,
+      appointmentStatus: "Booked",
+    };
+
+    axiosInstanceAppointmentService
+      .post("/book", bookingDetails)
+      .then(() => {
+        toast.success("Appointment booked successfully!");
+        fetchAppointmentSlots(selectedDate);
+      })
+      .catch((err) => {
+        console.error("Error booking appointment:", err);
+        toast.error(
+          err?.response?.data?.message || "Failed to book appointment"
+        );
+      });
   };
 
   if (!doctor) {
@@ -50,6 +98,7 @@ const DoctorProfile = () => {
       </div>
     );
   }
+
   return (
     <div className="p-4">
       <div className="w-full max-w-6xl bg-white shadow-2xl rounded-xl overflow-hidden my-5 mx-auto">
@@ -127,6 +176,7 @@ const DoctorProfile = () => {
                   <tr className="bg-gray-100 text-gray-700">
                     <th className="px-4 py-2 border">Date</th>
                     <th className="px-4 py-2 border">Time</th>
+                    <th className="px-4 py-2 border">Appointment Type</th>
                     <th className="px-4 py-2 border">Action</th>
                   </tr>
                 </thead>
@@ -135,11 +185,27 @@ const DoctorProfile = () => {
                     <tr key={slot.availabilityId}>
                       <td className="border px-4 py-2">{slot.date}</td>
                       <td className="border px-4 py-2">
-                        {slot.startTime} - {slot.endTime}
+                        {convertTo12HourFormat(slot.startTime)} -{" "}
+                        {convertTo12HourFormat(slot.endTime)}
+                      </td>
+                      <td className="border px-4 py-2">
+                        <select
+                          value={slot.appointmentType}
+                          onChange={(e) =>
+                            handleAppointmentTypeChange(
+                              slot.availabilityId,
+                              e.target.value
+                            )
+                          }
+                          className="border px-2 py-1 rounded"
+                        >
+                          <option value="In_Person">In_Person</option>
+                          <option value="Telemedicine">Telemedicine</option>
+                        </select>
                       </td>
                       <td className="border px-4 py-2">
                         <button
-                          onClick={() => bookAppointment(slot.availabilityId)}
+                          onClick={() => bookAppointment(slot)}
                           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded"
                         >
                           Book
