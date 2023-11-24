@@ -20,6 +20,7 @@ import DoctorDatatable from "./components/patients/datatable/doctorDatatable";
 import PatientDoctorList from "./pages/list/patientDoctorList";
 import PatientDoctorProfileWithAppointment from "./pages/single/patientDoctorProfileWithAppointment";
 import AppointmentPatientBookedPage from "./pages/doctor-appointment-pages/appointmentPatientBooked";
+import RoomPage from "./pages/room-page/RoomPage";
 
 function App() {
   return (
@@ -27,6 +28,11 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/">
+            <Route
+              path="/room/:roomId"
+              element={<RoomPage key={window.location.pathname} />}
+            />
+
             <Route index element={<Home />} />
             <Route path="login" element={<Login />} />
             <Route path="patient/register" element={<PatientRegistration />} />

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axiosInstanceAppointmentService from "../../utils/axiosInstanceAppointmentService";
 import axiosInstancePatientService from "../../utils/axiosInstancePatientService";
 
 const AppointmentPatientBooked = () => {
   const [appointments, setAppointments] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axiosInstancePatientService
@@ -26,6 +28,10 @@ const AppointmentPatientBooked = () => {
     const isPM = hour >= 12;
     const formattedHour = hour % 12 || 12; // Convert "00" to "12"
     return `${formattedHour}:${minutes} ${isPM ? "PM" : "AM"}`;
+  };
+
+  const handleJoinTelemedicine = (patientId) => {
+    window.open(`/room/${patientId}`, "_blank");
   };
 
   return (
@@ -92,7 +98,14 @@ const AppointmentPatientBooked = () => {
                 </td>
                 <td className="py-4 px-6 text-center">
                   {isTelemedicine && isBooked ? (
-                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    <button
+                      onClick={() =>
+                        handleJoinTelemedicine(
+                          appointment.appointment.patientId,
+                        )
+                      }
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    >
                       Join Telemedicine
                     </button>
                   ) : (
