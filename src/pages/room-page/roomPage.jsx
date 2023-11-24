@@ -10,7 +10,7 @@ const RoomPage = () => {
   useEffect(() => {
     const appId = 1088349825;
     const serverSecret = "dfca16930426713946aafc936f213d8c";
-    const userName = "PatientName";
+    const userName = "Enter user name";
 
     const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
       appId,

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axiosInstanceDoctorService from "../../utils/axiosInstanceDoctorService";
 import axiosInstanceAppointmentService from "../../utils/axiosInstanceAppointmentService";
 import { toast } from "react-toastify";
+import axiosInstancePatientService from "../../utils/axiosInstancePatientService";
 
 const DoctorBookedAppointments = () => {
   const [bookedAppointments, setBookedAppointments] = useState([]);
@@ -12,32 +13,70 @@ const DoctorBookedAppointments = () => {
 
   // useEffect(() => {}, []);
 
-  const fetchBookedAppointments = () => {
-    axiosInstanceDoctorService
-      .get("/profile")
-      .then((response) => {
-        setDoctorId(response?.data?.doctorId);
-      })
-      .catch((error) => {
-        console.error("Error fetching doctor profile", error);
-        toast.error("Error fetching doctor id from the token!");
-      });
+  // const fetchBookedAppointments = () => {
+  //   axiosInstanceDoctorService
+  //     .get("/profile")
+  //     .then((response) => {
+  //       setDoctorId(response?.data?.doctorId);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching doctor profile", error);
+  //       toast.error("Error fetching doctor id from the token!");
+  //     });
 
-    if (!selectedDate) {
-      toast.error("Please select a date.");
-      return;
+  //   if (!selectedDate) {
+  //     toast.error("Please select a date.");
+  //     return;
+  //   }
+
+  //   axiosInstanceAppointmentService
+  //     .get(`/get/doctor/${doctorId}/${selectedDate}`)
+  //     .then((response) => {
+  //       setBookedAppointments(response?.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching booked appointments:", error);
+  //       setBookedAppointments([]);
+  //       toast.error("Failed to fetch booked appointments!");
+  //     });
+  // };
+
+  const fetchBookedAppointments = async () => {
+    try {
+      const doctorProfileResponse = await axiosInstanceDoctorService.get(
+        "/profile",
+      );
+      const doctorId = doctorProfileResponse?.data?.doctorId;
+      setDoctorId(doctorId);
+
+      if (!selectedDate) {
+        toast.error("Please select a date.");
+        return;
+      }
+
+      const appointmentsResponse = await axiosInstanceAppointmentService.get(
+        `/get/doctor/${doctorId}/${selectedDate}`,
+      );
+      const appointmentsWithPatientDetails = await Promise.all(
+        appointmentsResponse.data.map(async (appointment) => {
+          const patientResponse = await axiosInstancePatientService.get(
+            `/id/${appointment.patientId}`,
+          );
+          return {
+            ...appointment,
+            patientDetails: patientResponse.data,
+          };
+        }),
+      );
+      setBookedAppointments(appointmentsWithPatientDetails);
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("Failed to fetch data!");
     }
+  };
 
-    axiosInstanceAppointmentService
-      .get(`/get/doctor/${doctorId}/${selectedDate}`)
-      .then((response) => {
-        setBookedAppointments(response?.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching booked appointments:", error);
-        setBookedAppointments([]);
-        toast.error("Failed to fetch booked appointments!");
-      });
+  const handleJoinTelemedicine = (patientId) => {
+    window.open(`/room/${patientId}`, "_blank");
   };
 
   return (
@@ -64,9 +103,12 @@ const DoctorBookedAppointments = () => {
         <thead className="bg-gray-800 text-white">
           <tr>
             <th className="px-4 py-2 text-center">Appointment ID</th>
-            <th className="px-4 py-2 text-center">Patient ID</th>
+            <th className="px-4 py-2 text-center">Patient Name</th>
+            <th className="px-4 py-2 text-center">Gender</th>
+            <th className="px-4 py-2 text-center">DOB</th>
             <th className="px-4 py-2 text-center">Appointment Type</th>
             <th className="px-4 py-2 text-center">Status</th>
+            <th className="px-4 py-2 text-center">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -77,13 +119,33 @@ const DoctorBookedAppointments = () => {
                   {appointment.appointmentId}
                 </td>
                 <td className="border px-4 py-2 text-center">
-                  {appointment.patientId}
+                  {appointment.patientDetails.firstName +
+                    " " +
+                    appointment.patientDetails.lastName}
                 </td>
                 <td className="border px-4 py-2 text-center">
-                  {appointment.appointmentType}
+                  {appointment.patientDetails.gender}
+                </td>
+                <td className="border px-4 py-2 text-center">
+                  {appointment.patientDetails.dateOfBirth}
+                </td>
+                <td className="border px-4 py-2 text-center">
+                  {appointment.patientDetails.gender}
                 </td>
                 <td className="border px-4 py-2 text-center">
                   {appointment.appointmentStatus}
+                </td>
+                <td className="border px-4 py-2 text-center">
+                  {appointment.appointmentType === "Telemedicine" && (
+                    <button
+                      onClick={() =>
+                        handleJoinTelemedicine(appointment.patientId)
+                      }
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    >
+                      Join Telemedicine
+                    </button>
+                  )}
                 </td>
               </tr>
             ))
