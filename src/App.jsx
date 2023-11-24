@@ -21,6 +21,7 @@ import PatientDoctorList from "./pages/list/patientDoctorList";
 import PatientDoctorProfileWithAppointment from "./pages/single/patientDoctorProfileWithAppointment";
 import AppointmentPatientBookedPage from "./pages/doctor-appointment-pages/appointmentPatientBooked";
 import RoomPage from "./pages/room-page/RoomPage";
+import HMSCommunity from "./components/community/HMSCommunity";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
               <Route path=":patientId" element={<Single />} />
               <Route path="new" element={<New />} />
               <Route path="doctor/all" element={<PatientDoctorList />} />
+              <Route path="community" element={<HMSCommunity />} />
               <Route
                 path="appointment/all"
                 element={<AppointmentPatientBookedPage />}
