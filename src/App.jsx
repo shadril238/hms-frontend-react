@@ -19,6 +19,7 @@ import AppointmentBooked from "./pages/doctor-appointment-pages/appointmentBooke
 import DoctorDatatable from "./components/patients/datatable/doctorDatatable";
 import PatientDoctorList from "./pages/list/patientDoctorList";
 import PatientDoctorProfileWithAppointment from "./pages/single/patientDoctorProfileWithAppointment";
+import AppointmentPatientBookedPage from "./pages/doctor-appointment-pages/appointmentPatientBooked";
 
 function App() {
   return (
@@ -34,6 +35,10 @@ function App() {
               <Route path=":patientId" element={<Single />} />
               <Route path="new" element={<New />} />
               <Route path="doctor/all" element={<PatientDoctorList />} />
+              <Route
+                path="appointment/all"
+                element={<AppointmentPatientBookedPage />}
+              />
               <Route
                 path="doctor/:doctorId"
                 element={<PatientDoctorProfileWithAppointment />}
