@@ -20,7 +20,7 @@ import DoctorDatatable from "./components/patients/datatable/doctorDatatable";
 import PatientDoctorList from "./pages/list/patientDoctorList";
 import PatientDoctorProfileWithAppointment from "./pages/single/patientDoctorProfileWithAppointment";
 import AppointmentPatientBookedPage from "./pages/doctor-appointment-pages/appointmentPatientBooked";
-import RoomPage from "./pages/room-page/RoomPage";
+import RoomPage from "./pages/room-page/roomPage";
 import HMSCommunity from "./components/community/HMSCommunity";
 
 function App() {
