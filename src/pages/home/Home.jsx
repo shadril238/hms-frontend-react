@@ -6,8 +6,9 @@ import axiosInstancePatientService from "../../utils/axiosInstancePatientService
 import axiosInstanceDoctorService from "../../utils/axiosInstanceDoctorService";
 import axiosInstanceAppointmentService from "../../utils/axiosInstanceAppointmentService";
 import { FaUserInjured, FaUserMd, FaCalendarAlt } from "react-icons/fa";
-import { Pie } from "react-chartjs-2";
+import { Pie, Bar } from "react-chartjs-2";
 import Chart from "chart.js/auto";
+import axiosInstanceInventoryService from "../../utils/axiosInstanceInventoryService";
 
 const Home = () => {
   const [patientCount, setPatientCount] = useState(0);
@@ -24,6 +25,10 @@ const Home = () => {
         borderWidth: 1,
       },
     ],
+  });
+  const [medicineData, setMedicineData] = useState({
+    labels: [],
+    datasets: [],
   });
 
   useEffect(() => {
@@ -71,11 +76,23 @@ const Home = () => {
     };
 
     fetchPatientDetails();
+
+    const fetchMedicineInventory = async () => {
+      try {
+        const response = await axiosInstanceInventoryService.get(
+          "/medicine/get-all",
+        );
+        processMedicineData(response.data);
+      } catch (error) {
+        console.error("Error fetching medicine inventory:", error);
+      }
+    };
+    fetchMedicineInventory();
   }, []);
 
   const chartOptions = {
     responsive: true,
-    maintainAspectRatio: false, // This ensures that the chart respects the given height and width
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         display: true,
@@ -97,11 +114,49 @@ const Home = () => {
     },
   };
 
+  const barChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: {
+      duration: 0, // Disable animation
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+    },
+    plugins: {
+      legend: {
+        display: true,
+        position: "top",
+      },
+    },
+  };
+
+  const processMedicineData = (medicines) => {
+    const medicineCount = medicines.reduce((acc, medicine) => {
+      acc[medicine.medicineType] = (acc[medicine.medicineType] || 0) + 1;
+      return acc;
+    }, {});
+
+    setMedicineData({
+      labels: Object.keys(medicineCount),
+      datasets: [
+        {
+          label: "Number of Medicines",
+          data: Object.values(medicineCount),
+          backgroundColor: "rgba(53, 162, 235, 0.5)",
+        },
+      ],
+    });
+  };
+
   return (
     <div className="home flex">
       <Sidebar />
       <div className="homeContainer flex-1">
         <Navbar />
+
         <div className="widgets grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
           <div className="widget flex flex-col items-center justify-center p-6 shadow-xl rounded-lg bg-gradient-to-r from-blue-100 to-blue-200 hover:from-blue-200 hover:to-blue-300 transition duration-300">
             <FaUserInjured className="text-4xl text-blue-500 mb-2" />
@@ -122,11 +177,30 @@ const Home = () => {
           </div>
         </div>
 
+        {/* Charts Container */}
         <div
-          className="chart-container p-4 mx-auto"
-          style={{ width: "400px", height: "400px", marginLeft: "20px" }}
+          className="charts-container"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "20px",
+          }}
         >
-          <Pie data={chartData} options={chartOptions} />
+          {/* Pie Chart */}
+          <div
+            className="chart-container"
+            style={{ width: "400px", height: "400px", marginRight: "20px" }}
+          >
+            <Pie data={chartData} options={chartOptions} />
+          </div>
+
+          {/* Bar Chart */}
+          <div
+            className="chart-container"
+            style={{ width: "400px", height: "400px" }}
+          >
+            <Bar data={medicineData} options={barChartOptions} />
+          </div>
         </div>
       </div>
     </div>
