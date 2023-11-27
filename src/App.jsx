@@ -22,6 +22,7 @@ import PatientDoctorProfileWithAppointment from "./pages/single/patientDoctorPro
 import AppointmentPatientBookedPage from "./pages/doctor-appointment-pages/appointmentPatientBooked";
 import RoomPage from "./pages/room-page/roomPage";
 import HMSCommunity from "./components/community/HMSCommunity";
+import PatientHomePage from "./pages/home/PatientHomePage";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
             <Route path="patient/register" element={<PatientRegistration />} />
             <Route path="patient">
               <Route index element={<List />} />
+              <Route path="home" element={<PatientHomePage />} />
               <Route path=":patientId" element={<Single />} />
               <Route path="new" element={<New />} />
               <Route path="doctor/all" element={<PatientDoctorList />} />

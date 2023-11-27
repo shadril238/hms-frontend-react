@@ -41,7 +41,7 @@ const Home = () => {
         setDoctorCount(doctorResponse.data);
 
         const appointmentResponse = await axiosInstanceAppointmentService.get(
-          "/count",
+          "/count"
         );
         setAppointmentCount(appointmentResponse.data);
       } catch (error) {
@@ -57,7 +57,7 @@ const Home = () => {
         const patients = response.data;
         const maleCount = patients.filter((p) => p.gender === "Male").length;
         const femaleCount = patients.filter(
-          (p) => p.gender === "Female",
+          (p) => p.gender === "Female"
         ).length;
 
         const newChartData = {
@@ -80,7 +80,7 @@ const Home = () => {
     const fetchMedicineInventory = async () => {
       try {
         const response = await axiosInstanceInventoryService.get(
-          "/medicine/get-all",
+          "/medicine/get-all"
         );
         processMedicineData(response.data);
       } catch (error) {
@@ -130,6 +130,13 @@ const Home = () => {
         display: true,
         position: "top",
       },
+      title: {
+        display: true,
+        text: "Medicines Distribution by Medicine Type",
+      },
+      tooltip: {
+        enabled: true,
+      },
     },
   };
 
@@ -139,13 +146,25 @@ const Home = () => {
       return acc;
     }, {});
 
+    const barColors = [
+      "rgba(255, 99, 132, 0.5)",
+      "rgba(54, 162, 235, 0.5)",
+      "rgba(255, 206, 86, 0.5)",
+      "rgba(75, 192, 192, 0.5)",
+      "rgba(153, 102, 255, 0.5)",
+      "rgba(255, 159, 64, 0.5)",
+    ];
+
     setMedicineData({
       labels: Object.keys(medicineCount),
       datasets: [
         {
           label: "Number of Medicines",
           data: Object.values(medicineCount),
-          backgroundColor: "rgba(53, 162, 235, 0.5)",
+          backgroundColor: barColors.slice(
+            0,
+            Object.keys(medicineCount).length
+          ),
         },
       ],
     });
