@@ -1,7 +1,7 @@
 import DoctorSidebar from "../../components/sidebar/DoctorSidebar";
 import Navbar from "../../components/navbar/Navbar";
 import AppointmentPatientBooked from "../../components/doctor-appointment/appointmentPatientBooked";
-import Sidebar from "../../components/sidebar/Sidebar";
+import Sidebar from "../../components/sidebar/PatientSidebar";
 const AppointmentPatientBookedPage = () => {
   return (
     <div className="flex min-h-screen">

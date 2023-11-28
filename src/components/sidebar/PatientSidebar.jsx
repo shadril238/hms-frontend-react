@@ -10,12 +10,19 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import LocalPharmacyIcon from "@mui/icons-material/LocalPharmacy"; // Import for Pharmacy Icon
 import List from "./../../pages/list/List";
-
+import ForumIcon from "@mui/icons-material/Forum";
+import { useNavigate } from "react-router-dom";
 const Sidebar = () => {
+  const navigate = useNavigate();
   const [patientSubmenuOpen, setPatientSubmenuOpen] = useState(false);
   const [doctorSubmenuOpen, setDoctorSubmenuOpen] = useState(false);
   const [pharmacySubmenuOpen, setPharmacySubmenuOpen] = useState(false);
   const [notificationSubmenuOpen, setNotificationSubmenuOpen] = useState(false);
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    navigate("/login");
+  };
 
   return (
     <div className="flex flex-col w-56 h-screen border-r border-gray-200 bg-white">
@@ -28,7 +35,10 @@ const Sidebar = () => {
           {/* Main Options */}
           <li className="flex items-center p-2 hover:bg-blue-600 bg-blue-500 cursor-pointer mb-2">
             <DashboardIcon className="text-white" />
-            <Link to="/" className="ml-4 text-base font-semibold text-white">
+            <Link
+              to="/patient/home"
+              className="ml-4 text-base font-semibold text-white"
+            >
               Dashboard
             </Link>
           </li>
@@ -42,7 +52,7 @@ const Sidebar = () => {
             >
               <MedicalServicesIcon className="text-white" />
               <span className="flex-grow ml-4 text-base font-semibold text-white">
-                Doctor
+                Doctors
               </span>
               {doctorSubmenuOpen ? (
                 <ExpandLessIcon className="text-white" />
@@ -53,23 +63,23 @@ const Sidebar = () => {
             {doctorSubmenuOpen && (
               <ul className="mt-0">
                 <li className="py-1 text-base font-semibold hover:bg-gray-100 border border-gray-200 pl-10">
-                  <Link to="/doctor/appointment/create" className="text-black">
+                  <Link to="/patient/doctor/all" className="text-black">
                     Doctor List
                   </Link>
                 </li>
-                <li className="py-1 text-base font-semibold hover:bg-gray-100 border border-gray-200 pl-10">
+                {/* <li className="py-1 text-base font-semibold hover:bg-gray-100 border border-gray-200 pl-10">
                   <Link to="/doctor/appointment/getall" className="text-black">
                     Available Appointments
                   </Link>
-                </li>
-                <li className="py-1 text-base font-semibold hover:bg-gray-100 border border-gray-200 pl-10">
+                </li> */}
+                {/* <li className="py-1 text-base font-semibold hover:bg-gray-100 border border-gray-200 pl-10">
                   <Link
                     to="/doctor/appointment/booked/getall"
                     className="text-black"
                   >
                     Booked Appointments
                   </Link>
-                </li>
+                </li> */}
               </ul>
             )}
           </li>
@@ -81,7 +91,7 @@ const Sidebar = () => {
             >
               <LocalPharmacyIcon className="text-white" />
               <span className="flex-grow ml-4 text-base font-semibold text-white">
-                Pharmacy
+                Appointments
               </span>
               {pharmacySubmenuOpen ? (
                 <ExpandLessIcon className="text-white" />
@@ -92,13 +102,8 @@ const Sidebar = () => {
             {pharmacySubmenuOpen && (
               <ul className="mt-0">
                 <li className="py-1 text-base font-semibold hover:bg-gray-100 border border-gray-200 pl-10">
-                  <Link to="/pharmacy" className="text-black">
-                    Medicine
-                  </Link>
-                </li>
-                <li className="py-1 text-base font-semibold hover:bg-gray-100 border border-gray-200 pl-10">
-                  <Link to="/pharmacy" className="text-black">
-                    Inventory
+                  <Link to="/patient/appointment/all" className="text-black">
+                    Booked Appointments
                   </Link>
                 </li>
               </ul>
@@ -112,9 +117,9 @@ const Sidebar = () => {
                 setNotificationSubmenuOpen(!notificationSubmenuOpen)
               }
             >
-              <NotificationsIcon className="text-white" />
+              <ForumIcon className="text-white" />
               <span className="flex-grow ml-4 text-base font-semibold text-white">
-                Notifications
+                Community
               </span>
               {notificationSubmenuOpen ? (
                 <ExpandLessIcon className="text-white" />
@@ -125,14 +130,23 @@ const Sidebar = () => {
             {notificationSubmenuOpen && (
               <ul className="mt-0">
                 <li className="py-1 text-base font-semibold hover:bg-gray-100 border border-gray-200 pl-10">
-                  <Link to="/notifications" className="text-black">
-                    View Notifications
+                  <Link to="/patient/community" className="text-black">
+                    HMS Community
                   </Link>
                 </li>
               </ul>
             )}
           </li>
           {/* ... Add more sections as needed ... */}
+          <li
+            className="flex items-center p-2 hover:bg-blue-600 bg-blue-500 cursor-pointer mb-2"
+            onClick={handleLogout} // Add onClick handler for logout
+          >
+            <LogoutIcon className="text-white" />
+            <span className="ml-4 text-base font-semibold text-white">
+              Logout
+            </span>
+          </li>
         </ul>
       </div>
     </div>

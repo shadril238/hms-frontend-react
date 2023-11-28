@@ -3,21 +3,26 @@ import axiosInstancePatientService from "../../utils/axiosInstancePatientService
 import { FaHeartbeat, FaRulerVertical, FaWeight } from "react-icons/fa";
 import { Line } from "react-chartjs-2";
 import Chart from "chart.js/auto";
+import Navbar from "../../components/navbar/Navbar";
+import Sidebar from "../../components/sidebar/PatientSidebar";
 
 const PatientHomePage = () => {
   const [healthData, setHealthData] = useState(null);
-  const [chartData, setChartData] = useState({});
-
+  const [chartData, setChartData] = useState({
+    labels: [],
+    datasets: [],
+  });
   useEffect(() => {
     const fetchHealthData = async () => {
       try {
         const response = await axiosInstancePatientService.get(
-          "/health-records/all"
+          "/health-records/all",
         );
         const data = response.data;
         if (data && data.length > 0) {
           setHealthData(data[0]); // latest health data for cards
           processChartData(data); // all health data for chart
+          console.log(data);
         } else {
           console.error("No health data available");
         }
@@ -30,6 +35,9 @@ const PatientHomePage = () => {
   }, []);
 
   const processChartData = (data) => {
+    if (!Array.isArray(data) || data.length === 0) {
+      return; // Exit the function if data is not an array or is empty
+    }
     const dates = data.map((item) => item.checkupDate);
     const bodyTemperatures = data.map((item) => item.bodyTemperature);
     const pulseRates = data.map((item) => item.pulseRate);
@@ -84,44 +92,54 @@ const PatientHomePage = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {healthData ? (
-          <>
-            <div className="card bg-white shadow-lg rounded-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
-              <FaRulerVertical className="text-4xl text-blue-500 mb-3 mx-auto" />
-              <h3 className="text-xl font-bold mb-2">BMI</h3>
-              <p className="text-lg">
-                {calculateBMI(healthData.heightInCm, healthData.weightInKg)}
-              </p>
-            </div>
+    <div className="flex">
+      <Sidebar />
 
-            <div className="card bg-white shadow-lg rounded-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
-              <FaWeight className="text-4xl text-green-500 mb-3 mx-auto" />
-              <h3 className="text-xl font-bold mb-2">BMR</h3>
-              <p className="text-lg">
-                {calculateBMR(
-                  healthData.heightInCm,
-                  healthData.weightInKg,
-                  healthData.age,
-                  healthData.gender
-                )}
-              </p>
-            </div>
+      <div className="flex-1 p-4">
+        <Navbar />
 
-            <div className="card bg-white shadow-lg rounded-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
-              <FaHeartbeat className="text-4xl text-red-500 mb-3 mx-auto" />
-              <h3 className="text-xl font-bold mb-2">Blood Pressure</h3>
-              <p className="text-lg">{healthData.bloodPressure || "N/A"}</p>
-            </div>
-          </>
-        ) : (
-          <p className="col-span-3 text-center">Loading health data...</p>
-        )}
-      </div>
-      <div className="mt-8">
-        <h2 className="text-2xl font-bold mb-4">Health Trends</h2>
-        <Line data={chartData} />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Health data cards */}
+          {healthData ? (
+            <>
+              <div className="card bg-white shadow-lg rounded-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
+                <FaRulerVertical className="text-4xl text-blue-500 mb-3 mx-auto" />
+                <h3 className="text-xl font-bold mb-2">BMI</h3>
+                <p className="text-lg">
+                  {calculateBMI(healthData.heightInCm, healthData.weightInKg)}
+                </p>
+              </div>
+
+              <div className="card bg-white shadow-lg rounded-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
+                <FaWeight className="text-4xl text-green-500 mb-3 mx-auto" />
+                <h3 className="text-xl font-bold mb-2">BMR</h3>
+                <p className="text-lg">
+                  {calculateBMR(
+                    healthData.heightInCm,
+                    healthData.weightInKg,
+                    healthData.age,
+                    healthData.gender,
+                  )}
+                </p>
+              </div>
+
+              <div className="card bg-white shadow-lg rounded-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
+                <FaHeartbeat className="text-4xl text-red-500 mb-3 mx-auto" />
+                <h3 className="text-xl font-bold mb-2">Blood Pressure</h3>
+                <p className="text-lg">{healthData.bloodPressure || "N/A"}</p>
+              </div>
+            </>
+          ) : (
+            <p className="col-span-3 text-center">Loading health data...</p>
+          )}
+        </div>
+
+        <div className="mt-8">
+          <h2 className="text-2xl font-bold mb-4">Health Trends</h2>
+          {chartData && chartData.labels.length > 0 && (
+            <Line data={chartData} />
+          )}
+        </div>
       </div>
     </div>
   );

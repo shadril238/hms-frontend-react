@@ -1,24 +1,26 @@
 import React from "react";
 import LoginForm from "../../components/loginform/LoginForm";
 import Navbar from "../../components/navbar/Navbar";
-import HmsImg from "../../assets/hms.jpeg";
+import OpenNavbar from "../../components/navbar/openNav";
 
 const Login = () => {
   return (
     <React.Fragment>
-      <Navbar />
+      <OpenNavbar />
       <section
         className="flex justify-center items-center h-screen"
         style={{
-          backgroundImage: `url(${HmsImg})`,
+          backgroundColor: "#f0f4f8", // Adjust the background color as needed
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
-        <div className="bg-blue-100 p-6 rounded-lg shadow-2xl max-w-md mx-auto">
+        <div className="bg-white p-6 rounded-lg shadow-2xl max-w-xl mx-auto">
+          {" "}
+          {/* Changed max-w-lg to max-w-xl */}
           <div className="content-wrapper text-center">
-            <h2 className="text-3xl font-bold mb-4 text-white">Login</h2>
-            <p className="mb-6 text-white text-lg">
+            {/* <h2 className="text-3xl font-bold mb-4">Login</h2> */}
+            <p className="mb-6 text-lg">
               Sign in with your email and password.
             </p>
 

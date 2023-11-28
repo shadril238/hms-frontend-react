@@ -24,6 +24,10 @@ import RoomPage from "./pages/room-page/roomPage";
 import HMSCommunity from "./components/community/HMSCommunity";
 import PatientHomePage from "./pages/home/PatientHomePage";
 import DoctorHomePage from "./pages/home/DoctorHomePage";
+import DoctorRegistration from "./pages/register-patient/doctorRegister";
+import Authenticate from "./Authenticate";
+import DoctorPatientsList from "./pages/list/doctorPatientList";
+import DoctorPatientSingle from "./pages/single/DoctorPatientSingle";
 
 function App() {
   return (
@@ -32,51 +36,70 @@ function App() {
         <Routes>
           <Route path="/">
             <Route
-              path="/room/:roomId"
+              path="room/:roomId"
               element={<RoomPage key={window.location.pathname} />}
             />
-
-            <Route index element={<Home />} />
             <Route path="login" element={<Login />} />
             <Route path="patient/register" element={<PatientRegistration />} />
-            <Route path="patient">
-              <Route index element={<List />} />
-              <Route path="home" element={<PatientHomePage />} />
-              <Route path=":patientId" element={<Single />} />
-              <Route path="new" element={<New />} />
-              <Route path="doctor/all" element={<PatientDoctorList />} />
-              <Route path="community" element={<HMSCommunity />} />
-              <Route
-                path="appointment/all"
-                element={<AppointmentPatientBookedPage />}
-              />
-              <Route
-                path="doctor/:doctorId"
-                element={<PatientDoctorProfileWithAppointment />}
-              />
+            <Route path="doctor/register" element={<DoctorRegistration />} />
+
+            <Route index element={<Home />} />
+
+            <Route element={<Authenticate requiredRole={"Patient"} />}>
+              <Route path="patient">
+                <Route index element={<List />} />
+                <Route path="home" element={<PatientHomePage />} />
+                <Route path=":patientId" element={<Single />} />
+                <Route path="new" element={<New />} />
+                <Route path="doctor/all" element={<PatientDoctorList />} />
+                <Route path="community" element={<HMSCommunity />} />
+                <Route
+                  path="appointment/all"
+                  element={<AppointmentPatientBookedPage />}
+                />
+                <Route
+                  path="doctor/:doctorId"
+                  element={<PatientDoctorProfileWithAppointment />}
+                />
+                <Route path="doctor/list" element={<List />} />
+                <Route path="doctor/:doctorId" element={<Single />} />
+              </Route>
             </Route>
-            <Route path="doctor">
-              <Route index element={<List />} />
-              <Route path="home" element={<DoctorHomePage />} />
-              <Route path=":doctorId" element={<Single />} />
-              <Route path="new" element={<New />} />
-              <Route
-                path="appointment/create"
-                element={<AppointmentCreate />}
-              />
-              <Route
-                path="appointment/getall"
-                element={<AppointmentSlotsPage />}
-              />
-              <Route
-                path="appointment/booked/getall"
-                element={<AppointmentBooked />}
-              />
+
+            <Route element={<Authenticate requiredRole={"Doctor"} />}>
+              <Route path="doctor">
+                <Route index element={<List />} />
+                <Route path="home" element={<DoctorHomePage />} />
+                <Route path="patient/all" element={<DoctorPatientsList />} />
+                <Route
+                  path="patient/:patientId"
+                  element={<DoctorPatientSingle />}
+                />
+                <Route path="new" element={<New />} />
+                <Route
+                  path="appointment/create"
+                  element={<AppointmentCreate />}
+                />
+                <Route
+                  path="appointment/getall"
+                  element={<AppointmentSlotsPage />}
+                />
+                <Route
+                  path="appointment/booked/getall"
+                  element={<AppointmentBooked />}
+                />
+              </Route>
             </Route>
-            <Route path="admin">
-              <Route index element={<List />} />
-              <Route path=":adminId" element={<Single />} />
-              <Route path="new" element={<New />} />
+            <Route element={<Authenticate requiredRole={"Admin"} />}>
+              <Route path="admin">
+                <Route index element={<List />} />
+                <Route path="patient/list" element={<List />} />
+                <Route path="patient/:patientId" element={<Single />} />
+                <Route path="home" element={<Home />} />
+
+                <Route path=":adminId" element={<Single />} />
+                <Route path="new" element={<New />} />
+              </Route>
             </Route>
           </Route>
         </Routes>
