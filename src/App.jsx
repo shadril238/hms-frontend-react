@@ -28,6 +28,10 @@ import DoctorRegistration from "./pages/register-patient/doctorRegister";
 import Authenticate from "./Authenticate";
 import DoctorPatientsList from "./pages/list/doctorPatientList";
 import DoctorPatientSingle from "./pages/single/DoctorPatientSingle";
+import AdminDoctorDatatable from "./components/patients/datatable/AdminDoctorDatatable";
+import AdminDoctorProfile from "./components/patients/profilepage/adminDoctorProfile";
+import AdminDoctorList from "./pages/list/adminDoctorList";
+import AdminDoctorSingle from "./pages/single/AdminDoctorSingle";
 
 function App() {
   return (
@@ -95,6 +99,11 @@ function App() {
                 <Route index element={<List />} />
                 <Route path="patient/list" element={<List />} />
                 <Route path="patient/:patientId" element={<Single />} />
+                <Route path="doctor/list" element={<AdminDoctorList />} />
+                <Route
+                  path="doctor/:doctorId"
+                  element={<AdminDoctorSingle />}
+                />
                 <Route path="home" element={<Home />} />
 
                 <Route path=":adminId" element={<Single />} />

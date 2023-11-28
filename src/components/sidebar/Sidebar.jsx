@@ -86,7 +86,7 @@ const Sidebar = () => {
             {doctorSubmenuOpen && (
               <ul className="mt-0">
                 <li className="py-1 text-base font-semibold hover:bg-gray-100 border border-gray-200 pl-10">
-                  <Link to="/patient/doctor/list" className="text-black">
+                  <Link to="/admin/doctor/list" className="text-black">
                     Doctor List
                   </Link>
                 </li>
